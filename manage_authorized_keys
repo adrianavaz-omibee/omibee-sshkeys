@@ -1,0 +1,50 @@
+#! /bin/bash
+
+set -u
+
+# MAKE SURE THIS IS SSL!
+URL="https://bitbucket.org/omibee/omibee-sshkeys/raw/master/ssh/authorized_keys"
+
+OWNER="omibee"
+GROUP="omibee"
+SSH_HOME=/home/omibee/.ssh/
+
+if which curl 2>&1 >/dev/null
+then
+  GET="curl --silent -o - -L ${URL}"
+else
+  GET="wget -q -O - ${URL}"
+fi
+
+if ! [[ -d $SSH_HOME ]]
+then
+  mkdir $SSH_HOME
+  chmod 700 $SSH_HOME
+  chown $OWNER:$GROUP $SSH_HOME
+fi
+
+# Make sure there is no temporary file
+if [[ -f $SSH_HOME/authorized_keys.tmp ]]
+then
+  rm -f $SSH_HOME/authorized_keys.tmp
+fi
+
+# This should be gone now.
+if ! [[ -f $SSH_HOME/authorized_keys.tmp ]]
+then
+  touch $SSH_HOME/authorized_keys.tmp
+  chmod 644 $SSH_HOME/authorized_keys.tmp
+  chown $OWNER:$GROUP $SSH_HOME/authorized_keys.tmp
+fi
+
+# Download the file.  Abort without modifying ~/.ssh/authorized_keys if this
+# step fails.
+$GET > $SSH_HOME/authorized_keys.tmp
+rval=$?
+if [[ $rval -ne 0 ]]; then
+  echo "Error: Download failed with exit status code $rval"
+  exit 1
+fi
+
+# Now move the file into place.  POSIX rename is atomic.
+mv -f $SSH_HOME/authorized_keys.tmp $SSH_HOME/authorized_keys
