@@ -9,13 +9,14 @@ ssh-keygen -b 4096 -f .ssh/id_rsa -C first.last@omibee.com -o -a 500
 ```
 
 # Adding Keys
-Keys should be added to the `templates/ssh/` directory of this repository. Add your public key as `username.pub`, and then append it to `authorized_keys`. This might look something like:
+Keys should be added to the `ssh/` directory of this repository. Add your public key as `username.pub`, and then append it to `authorized_keys`. This might look something like:
 
 ```bash
 # Be sure to replace SSHKEY_DIR and USERNAME with the correct values!
-export SSHKEY_DIR=~/working/omibee-sshkeys/ssh
+export SSHKEY_DIR=ssh
 export USERNAME="username"
 
+cd omibee-sshkeys/
 cp ~/.ssh/id_rsa.pub ${SSHKEY_DIR}/${USERNAME}.pub
 cat ${SSHKEY_DIR}/${USERNAME}.pub >> ${SSHKEY_DIR}/authorized_keys
 ```
