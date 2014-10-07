@@ -1,7 +1,6 @@
 # Omibee SSH Keys
-Omibee engineers and technical people should add their SSH public keys to
-the ssh directory of this project. These keys are periodically copied to
-our Delivery systems.
+Omibee engineers and technical people should add/remove their SSH public keys to
+the ssh directory of this project.
 
 # Creating Keys
 ```bash
@@ -9,51 +8,11 @@ ssh-keygen -b 4096 -f .ssh/id_rsa -C first.last@omibee.com -o -a 500
 ```
 
 # Adding Keys
-Keys should be added to the `ssh/` directory of this repository. Add your public key as `username.pub`, and then append it to `authorized_keys`. This might look something like:
+Keys should be added to the `ssh/` directory of this repository. Add your public key as `username.pub`.
 
-```bash
-# Be sure to replace SSHKEY_DIR and USERNAME with the correct values!
-export SSHKEY_DIR=ssh
-export USERNAME="username"
+Afterwards, add your `username` to the `omibee_users`array in the `users.yml` file.
 
-cd omibee-sshkeys/
-cp ~/.ssh/id_rsa.pub ${SSHKEY_DIR}/${USERNAME}.pub
-cat ${SSHKEY_DIR}/${USERNAME}.pub >> ${SSHKEY_DIR}/authorized_keys
-```
+Once your pull request has been merged into the master branch, the users in `omibee_users` will be created in our managed servers and their keys added to their home directory `.ssh/authorized_keys`.
 
-Once your pull request has been merged into the master branch, the keys will
-automatically be copied to all of the hosts using this script.
-
-
-# Usage
-SSH access can be granted using this process.
-
-If the host has a cron that uses `/etc/cron.hourly/` then simply copy the
-script into `/etc/cron.hourly/` like this:
-
-```bash
-cd /etc/cron.hourly/
-curl -O https://bitbucket.org/omibee/omibee-sshkeys/raw/master/manage_authorized_keys
-chmod +x manage_root_authorized_keys
-```
-
-If the cron on the system does not support `cron.hourly`, the following
-crontab entry may be used.
-
-```bash
-mkdir -p /usr/local/bin
-cd /usr/local/bin
-curl -O https://bitbucket.org/omibee/omibee-sshkeys/raw/master/manage_authorized_keys
-chmod +x manage_authorized_keys
-crontab -e
-```
-
-The entry should look like:
-
-```
-# min hour dom month dow command
-59 * * * * /usr/local/bin/manage_authorized_keys
-```
-
-# Inspired by
-https://github.com/puppetlabs/puppetlabs-sshkeys
+#Removing Keys
+The inverse of "adding keys" should be done. This way we ensure that users are removed from our managed servers.

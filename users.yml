@@ -1,0 +1,4 @@
+---
+default_users: ["vagrant", "ubuntu"]
+
+omibee_users: ["rmarcelino", "pfaustino", "jsantos"]
