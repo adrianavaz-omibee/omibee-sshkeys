@@ -1,4 +1,3 @@
 ---
-default_users: ["vagrant", "ubuntu"]
 
-omibee_users: ["rmarcelino", "pfaustino", "lmendes", "jmachado", "igorcruz"]
+omibee_users: ["pfaustino", "lmendes", "jmachado", "igorcruz"]
