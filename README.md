@@ -4,7 +4,7 @@ the ssh directory of this project.
 
 # Creating Keys
 ```bash
-ssh-keygen -t ed25519  -C [first].[last@omibee.com
+ssh-keygen -t ed25519  -C [first].[last]@omibee.com
 ```
 
 # Adding Keys
