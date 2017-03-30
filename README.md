@@ -4,7 +4,7 @@ the ssh directory of this project.
 
 # Creating Keys
 ```bash
-ssh-keygen -b 4096 -f .ssh/id_rsa -C first.last@omibee.com -o -a 500
+ssh-keygen -t ed25519  -C [first].[last@omibee.com
 ```
 
 # Adding Keys
